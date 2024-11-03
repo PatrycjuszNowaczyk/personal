@@ -1,0 +1,22 @@
+services:
+  node:
+    container_name: ${APP_NAME}_node
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      args:
+        - APP_NAME=${APP_NAME}
+        - UID=${UID}
+        - USERNAME=${USERNAME}
+        - GID=${GID}
+        - GROUP=${GROUP}
+    volumes:
+      - ../${APP_NAME}:/home/${USERNAME}/${APP_NAME}:rw
+    working_dir: /home/${USERNAME}/${APP_NAME}
+    user: "${UID}:${GID}"
+    ports:
+    - '80:3000'
+    restart: always
+    stdin_open: true
+    tty: true
+    command: bash -c "npm run dev"
